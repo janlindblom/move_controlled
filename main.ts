@@ -1,7 +1,15 @@
 radio.onReceivedNumber(function (receivedNumber) {
     current_command = receivedNumber
 })
+input.onButtonPressed(Button.A, function () {
+    if (calibration == 0) {
+        calibration = 1
+    } else {
+        calibration = 0
+    }
+})
 let headlights = 0
+let calibration = 0
 let current_command = 0
 current_command = 0
 let strip = neopixel.create(DigitalPin.P0, 5, NeoPixelMode.RGB)
@@ -20,6 +28,7 @@ for (let index = 0; index < 4; index++) {
 basic.pause(500)
 strip.clear()
 strip.show()
+basic.showIcon(IconNames.Happy)
 basic.forever(function () {
     headlights = 255 - input.lightLevel() * 3
     if (input.lightLevel() < 85) {
@@ -41,6 +50,8 @@ basic.forever(function () {
         strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Black))
     } else if (current_command == 3) {
         kitronik_servo_lite.forward()
+        strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Black))
+        strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Black))
     } else if (current_command == 4) {
         kitronik_servo_lite.backward()
     } else if (current_command == 5) {
@@ -48,6 +59,8 @@ basic.forever(function () {
     } else {
         kitronik_servo_lite.neutral()
         kitronik_servo_lite.stop()
+        strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Black))
+        strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Black))
     }
     strip.show()
     current_command = 0
