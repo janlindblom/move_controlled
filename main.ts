@@ -1,5 +1,4 @@
-radio.onReceivedNumber(function on_received_number(receivedNumber: number) {
-    
+radio.onReceivedNumber(function (receivedNumber) {
     current_command = receivedNumber
 })
 let headlights = 0
@@ -21,8 +20,7 @@ for (let index = 0; index < 4; index++) {
 basic.pause(500)
 strip.clear()
 strip.show()
-basic.forever(function on_forever() {
-    
+basic.forever(function () {
     headlights = 255 - input.lightLevel() * 3
     if (input.lightLevel() < 85) {
         strip.setPixelColor(2, neopixel.colors(NeoPixelColors.White))
@@ -33,11 +31,14 @@ basic.forever(function on_forever() {
     } else if (input.lightLevel() >= 95) {
         strip.setPixelColor(2, neopixel.colors(NeoPixelColors.Black))
     }
-    
     if (current_command == 1) {
         kitronik_servo_lite.left()
+        strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Purple))
+        strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Black))
     } else if (current_command == 2) {
         kitronik_servo_lite.right()
+        strip.setPixelColor(4, neopixel.colors(NeoPixelColors.Purple))
+        strip.setPixelColor(0, neopixel.colors(NeoPixelColors.Black))
     } else if (current_command == 3) {
         kitronik_servo_lite.forward()
     } else if (current_command == 4) {
@@ -48,8 +49,7 @@ basic.forever(function on_forever() {
         kitronik_servo_lite.neutral()
         kitronik_servo_lite.stop()
     }
-    
     strip.show()
     current_command = 0
-    basic.pause(500)
+    basic.pause(200)
 })
